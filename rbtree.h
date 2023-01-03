@@ -12,9 +12,11 @@
 #define offsetof(st, m) ((size_t) & (((st *)0)->m))
 #endif
 
-#define container_of(ptr, type, member) ({ \
-    const typeof( ((type *)0)->member) *_mptr = (ptr); \
-    (type *)((char*)_mptr - offsetof(type, member)); })
+// #define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
+#define container_of(ptr, type, member) ((type *)((char *)(ptr) - offsetof(type, member))) 
+// #define container_of(ptr, type, member) ({ \
+//     const typeof( ((type *)0)->member) *_mptr = (ptr); \
+//     (type *)((char*)_mptr - offsetof(type, member)); })
 
 #define RB_TREE_RED 0
 #define RB_TREE_BLACK 1
