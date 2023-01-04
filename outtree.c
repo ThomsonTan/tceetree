@@ -265,6 +265,33 @@ void outtreeinit(symtree_t *ptree, int color, int resetroot)
     }
 }
 
+int node_in_tree(symtree_node_t *pnode, char * node_name)
+{
+    symtree_list_t *list;
+
+    if (pnode == NULL) {
+        return 0;
+    } else if (strcmp(pnode->funname, node_name) == 0) {
+        return 1;
+    }
+
+    list = pnode->children;
+
+    while (list) {
+        pnode = list->symbol;
+
+        if (node_in_tree(pnode, node_name) == 1) {
+            // suppose node name is unique?
+            pnode->icolor = 2;
+            return 1;
+        }
+
+        list = list->next;
+    }
+
+    return 0;
+}
+
 // make tree output
 int outtree(symtree_t *ptree, treeparam_t *pparam)
 {
@@ -282,12 +309,25 @@ int outtree(symtree_t *ptree, treeparam_t *pparam)
         outtreeinit(ptree, 0, 1);
 
         // find all roots and set corresponding isroot flag
-        for (i = 0; i < pparam->rootno; i++) {
+        // for (i = 0; i < pparam->rootno; i++) {
+        //     pnode = symtree_first(ptree);
+        //     while (pnode != NULL) {
+        //         if (strcmp(pnode->funname, pparam->root[i]) == 0) {
+        //             pnode->isroot = 1;
+        //             // break; break missing because the same function can have multiple definitions in different files
+        //         }
+
+        //         pnode = symtree_next(pnode);
+        //     }
+        // }
+
+        // assume there is only one root?
+        if (pparam->rootno == 1) {
             pnode = symtree_first(ptree);
+
             while (pnode != NULL) {
-                if (strcmp(pnode->funname, pparam->root[i]) == 0) {
+                if (pnode->parents == NULL && node_in_tree(pnode, pparam->root[i])) {
                     pnode->isroot = 1;
-                    // break; break missing because the same function can have multiple definitions in different files
                 }
 
                 pnode = symtree_next(pnode);
