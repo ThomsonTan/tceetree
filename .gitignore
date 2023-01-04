@@ -4,3 +4,8 @@ tags
 cscope.*
 tceetree.out
 tceetree.out.png
+*.pdb
+*.obj
+*.exe
+*.ilk
+tceetree.out.pdf
