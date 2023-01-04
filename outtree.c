@@ -109,7 +109,7 @@ int outbranch(symtree_node_t *pnode, symtree_node_t *pbranch, treeparam_t *ppara
     int iErr = 0;
     int i;
 
-    if (pbranch && pbranch->outdone)
+    if (!pbranch /* && pbranch->outdone */) // one node could be target of multiple nodes.
         return iErr;
 
     // check if branch should be excluded
@@ -144,7 +144,7 @@ int outbranch(symtree_node_t *pnode, symtree_node_t *pbranch, treeparam_t *ppara
         }
     }
 
-    pbranch->outdone = 1;
+    // pbranch->outdone = 1;
 
     return iErr;
 }
@@ -198,7 +198,9 @@ int outsubtree(treeparam_t *pparam, symtree_node_t *pnode, int fdepth, int bdept
         list = pnode->children;
         while (list) {
             pbranch = list->symbol;
-            if (!pbranch->outdone) {
+            // always output branch!
+            // if (!pbranch->outdone)
+            {
                 // if branch not done
                 prevcol = pnode->icolor;
                 // output branch
@@ -222,7 +224,9 @@ int outsubtree(treeparam_t *pparam, symtree_node_t *pnode, int fdepth, int bdept
         list = pnode->parents;
         while (list) {
             pbranch = list->symbol;
-            if (!pbranch->outdone) {
+            // always output branch
+            // if (!pbranch->outdone)
+            {
                 // if branch not done
                 prevcol = pnode->icolor;
                 // output branch
