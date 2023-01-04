@@ -133,6 +133,8 @@ int outnode_gra(symtree_node_t *pnode, treeparam_t *pparam)
                     fprintf(grafile, " [style=\"%s\"]", hlstyles[pparam->hlstyle]);
                 else
                     fprintf(grafile, " [color=\"%s\",fontcolor=\"%s\"]", hlstyles[pparam->hlstyle], hlstyles[pparam->hlstyle]);
+            } else if (strcmp(pnode->funname, pparam->root[0]) == 0) {
+                fprintf(grafile, " [style=filled,fillcolor=green]");
             }
             fprintf(grafile, ";");
             // close cluster statement, if cluster enabled
